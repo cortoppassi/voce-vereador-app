@@ -2,10 +2,7 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
-import Divider from '@mui/material/Divider';
-import Drawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 // import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
@@ -49,16 +46,16 @@ export default function DrawerAppBar() {
           </Typography>
           
           <Link href="/" passHref>
-            <Button variant="text" color="inherit"> Prefeitura</Button>
+            <Button variant="text" color="inherit" sx={{ color: 'white' }}> Prefeitura</Button>
           </Link>
           <Link href="/servicos" passHref>
-            <Button color="inherit"> Serviços</Button>
+            <Button color="inherit" sx={{ color: 'white' }}> Serviços</Button>
           </Link>
           <Link href="/transparencia" passHref>
-            <Button color="inherit"> Transparência</Button>
+            <Button color="inherit" sx={{ color: 'white' }}> Transparência</Button>
           </Link>
           <Link href="/login" passHref>
-            <Button color="inherit"> Login</Button>
+            <Button color="inherit" sx={{ color: 'white' }}> Login</Button>
           </Link>
         </Toolbar>
       </AppBar>

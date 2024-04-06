@@ -67,6 +67,7 @@ export default function CadRequisicoes() {
     const formData = new FormData(event.target);
     const formDataObj = Object.fromEntries(formData.entries());
     formDataObj.tipoRequisicao = tipoRequisicao;
+    formDataObj.Prioridade = selectedOption;
     setRequisicoes([...requisicoes, formDataObj]);
     event.target.reset();
   };

@@ -1,16 +1,28 @@
 import React, { useState } from "react";
 import { Box, Typography, TextField, Button } from "@mui/material";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
-
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import CloudUploadIcon from "@mui/icons-material/CloudUpload";
+import { styled } from "@mui/material/styles";
 
 export default function CadUsuario() {
-  const [age, setAge] = React.useState('');
+  const [age, setAge] = React.useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+
+  const VisuallyHiddenInput = styled("input")({
+    clip: "rect(0 0 0 0)",
+    clipPath: "inset(50%)",
+    height: 1,
+    overflow: "hidden",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    whiteSpace: "nowrap",
+    width: 1,
+  });
 
   const handleChange = (event) => {
     setAge(event.target.value);
@@ -52,48 +64,40 @@ export default function CadUsuario() {
         autoComplete="off"
       >
         <Typography variant="h5">Cadastro de Usuário</Typography>
-        <TextField
-          name="login"
-          label="Login"
-          variant="standard"
-          required
-        />
-        <TextField
-          name="cpf"
-          label="CPF"
-          variant="standard"
-          required
-        />
-        <TextField
-          name="email"
-          label="E-mail"
-          variant="standard"
-          required
-        />
-        <InputLabel id="demo-simple-select-standard-label">Prefeitura-Bairro</InputLabel>
-        <Select
-          labelId="demo-simple-select-standard-label"
-          id="demo-simple-select-standard"
-          value={age}
-          onChange={handleChange}
-          label="Age"
-        >
-          <MenuItem value="">
-           
-          </MenuItem>
+        <TextField name="login" label="Login" variant="standard" required />
+        <TextField name="cpf" label="CPF" variant="standard" required />
+        <TextField name="email" label="E-mail" variant="standard" required />
+
+        <FormControl sx={{ m: 1, minWidth: 80 }}>
+          <InputLabel id="demo-simple-select-standard-label"> Prefeitura-Bairro</InputLabel>
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={age}
+            onChange={handleChange}
+            label="Age"
+          >
+          <MenuItem value=""></MenuItem>
           <MenuItem value={10}>Prefeitura-Bairro Centro/Brotas</MenuItem>
           <MenuItem value={20}>Prefeitura-Bairro Subúrbio/Ilhas</MenuItem>
-          <MenuItem value={30}>Prefeitura-Bairro Cajazeiras</MenuItem>
-          v<MenuItem value={40}>Prefeitura-Bairro Itapuã</MenuItem>
+          <MenuItem value={30}>Prefeitura-Bairro Cajazeiras</MenuItem>v
+          <MenuItem value={40}>Prefeitura-Bairro Itapuã</MenuItem>
           <MenuItem value={50}>Prefeitura-Bairro Cidade Baixa</MenuItem>
           <MenuItem value={60}>Prefeitura-Bairro Barra/Pituba</MenuItem>
-          <MenuItem value={70}>Prefeitura-Bairro Cabula/Tancredo Neves</MenuItem>
+          <MenuItem value={70}>
+            Prefeitura-Bairro Cabula/Tancredo Neves
+          </MenuItem>
           <MenuItem value={80}>Prefeitura-Bairro Pau da Lima</MenuItem>
-          <MenuItem value={90}>Prefeitura-Bairro São Caetano/Liberdade</MenuItem>
+          <MenuItem value={90}>
+            Prefeitura-Bairro São Caetano/Liberdade
+          </MenuItem>
           <MenuItem value={100}>Prefeitura-Bairro Valéria</MenuItem>
-          <MenuItem value={110}>Prefeitura-Bairro Distrito Cultural Centro Histórico</MenuItem>
+          <MenuItem value={110}>
+            Prefeitura-Bairro Distrito Cultural Centro Histórico
+          </MenuItem>
         </Select>
-        
+        </FormControl>
+
         <TextField
           name="telefone"
           label="Telefone"
@@ -118,6 +122,16 @@ export default function CadUsuario() {
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
         />
+         <Button
+          component="label"
+          role={undefined}
+          variant="contained"
+          tabIndex={-1}
+          startIcon={<CloudUploadIcon />}
+        >
+          Anexar Arquivo
+          <VisuallyHiddenInput type="file" />
+        </Button>
         <Button type="submit" variant="contained" color="primary">
           Cadastrar
         </Button>

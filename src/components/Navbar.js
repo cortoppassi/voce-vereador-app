@@ -7,6 +7,7 @@ import Button from '@mui/material/Button';
 // import MenuIcon from '@mui/icons-material/Menu';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
+import Image from 'next/image';
 
 import Link from 'next/link';
 
@@ -26,7 +27,7 @@ export default function DrawerAppBar() {
   return (
     <Box sx={{ display: 'flex', color: '#fff'}}>
       <CssBaseline />
-      <AppBar component="nav">
+      <AppBar component="nav" sx={{background: '#33568C'}}>
         <Toolbar>
           <IconButton
             color="inherit"
@@ -48,7 +49,7 @@ export default function DrawerAppBar() {
           <Link href="/" passHref>
             <Button variant="text" color="inherit" sx={{ color: 'white' }}> Prefeitura</Button>
           </Link>
-          <Link href="/servicos" passHref>
+          <Link href="/cadRequisicoes" passHref>
             <Button color="inherit" sx={{ color: 'white' }}> Serviços</Button>
           </Link>
           <Link href="/transparencia" passHref>

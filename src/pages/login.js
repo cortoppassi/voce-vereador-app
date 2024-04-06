@@ -50,6 +50,7 @@ export default function Login() {
             id="outlined-basic"
             label="Login"
             variant="outlined"
+            name="login"
             required
           />
           <TextField
@@ -61,7 +62,7 @@ export default function Login() {
             required
           />
 
-          <StyledButton type="submit" variant="contained" color="primary">
+          <StyledButton href="/cadRequisicoes" type="submit" variant="contained" color="primary">
             Entrar
           </StyledButton>
           <Typography variant="subtitle1" align="center" component="p">

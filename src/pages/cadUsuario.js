@@ -34,9 +34,17 @@ export default function CadUsuario() {
       alert("As senhas não coincidem!");
       return;
     }
+    
     const formData = new FormData(event.target);
-    const formDataObj = Object.fromEntries(formData.entries());
-    console.log(formDataObj);
+    const login = formData.get("login");
+    const password = formData.get("password");
+  
+    // Salvar login e senha no localStorage
+    localStorage.setItem("login", login);
+    localStorage.setItem("senha", password);
+  
+    // Redirecionar para a página de login
+    window.location.href = "/login";
   };
 
   return (
@@ -132,7 +140,7 @@ export default function CadUsuario() {
           Anexar Arquivo
           <VisuallyHiddenInput type="file" />
         </Button>
-        <Button type="submit" variant="contained" color="primary">
+        <Button href="/login" type="submit" variant="contained" color="primary">
           Cadastrar
         </Button>
       </Box>

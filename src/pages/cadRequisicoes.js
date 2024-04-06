@@ -8,6 +8,8 @@ import {
   Checkbox,
   Grid,
 } from "@mui/material";
+import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/system";
 import InputLabel from "@mui/material/InputLabel";
@@ -93,6 +95,7 @@ export default function CadRequisicoes() {
             borderRadius: "8px",
             padding: "20px",
             marginTop: "10vh",
+            justifyContent: "space-around",
           }}
           noValidate
           autoComplete="off"
@@ -186,16 +189,44 @@ export default function CadRequisicoes() {
       <Grid item xs={6}>
         <Box
           sx={{
-            border: "1px solid black",
+            // border: "1px solid black",
             borderRadius: "8px",
             padding: "20px",
             marginTop: "10vh",
           }}
         >
           <Typography variant="h5">Requisições Cadastradas</Typography>
-
           
-            {requisicoes.map((requisicao, index) => (
+          <TableContainer component={Paper} sx={{  }}>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <TableHead>
+          <TableRow>
+            <TableCell>Tipo de Requisição</TableCell>
+            <TableCell>Assunto</TableCell>
+            <TableCell>Descrição</TableCell>
+            <TableCell>Prioridade</TableCell>
+            <TableCell>Ações</TableCell>
+          </TableRow>
+        </TableHead>
+        <TableBody>
+          {requisicoes.map((requisicao, index) => (
+            <TableRow key={index}>
+              <TableCell>{requisicao.tipoRequisicao}</TableCell>
+              <TableCell>{requisicao.Assunto}</TableCell>
+              <TableCell>{requisicao.Descricao}</TableCell>
+              <TableCell>{requisicao.Prioridade}</TableCell>
+              <TableCell>
+                <IconButton onClick={() => handleDelete(index)}>
+                  <DeleteIcon />
+                </IconButton>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
+      </Table>
+    </TableContainer>
+          
+            {/* {requisicoes.map((requisicao, index) => (
               <Box
               sx={{
                 border: "1px solid black",
@@ -220,7 +251,7 @@ export default function CadRequisicoes() {
                 <Button onClick={() => handleDelete(index)}>Excluir</Button>
               </div>
               </Box>
-            ))}
+            ))} */}
          
         </Box>
       </Grid>

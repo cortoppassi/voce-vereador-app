@@ -7,7 +7,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
-const trasparencia = () => {
+const Trasparencia = () => {
   const [requisicoes, setRequisicoes] = useState([]);
 
   useEffect(() => {
@@ -43,4 +43,4 @@ const trasparencia = () => {
   );
 }
 
-export default trasparencia
+export default Trasparencia

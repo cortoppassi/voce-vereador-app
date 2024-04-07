@@ -41,10 +41,8 @@ export default function CadUsuario() {
     const email = formData.get("email");
     const telefone = formData.get("telefone");
 
-    // Salvar login e senha no localStorage como JSON
     localStorage.setItem("user", JSON.stringify({ login, password, cpf, email, telefone }));
   
-    // Redirecionar para a página de login
     window.location.href = "/login";
   };
 

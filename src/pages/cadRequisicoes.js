@@ -100,7 +100,7 @@ export default function CadRequisicoes() {
           noValidate
           autoComplete="off"
         >
-          <Typography variant="h5">Cadastro de Requisições</Typography>
+          <Typography variant="h4">Cadastro de Requisições</Typography>
 
           <FormControl sx={{ m: 1, minWidth: 80 }}>
             <InputLabel id="demo-simple-select-standard-label">
@@ -192,17 +192,17 @@ export default function CadRequisicoes() {
             padding: "20px"
           }}
         >
-          <Typography variant="h5">Requisições Cadastradas</Typography>
+          <Typography variant="h4">Requisições Cadastradas</Typography>
           
           <TableContainer component={Paper} sx={{  }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Tipo de Requisição</TableCell>
-            <TableCell>Assunto</TableCell>
-            <TableCell>Descrição</TableCell>
-            <TableCell>Prioridade</TableCell>
-            <TableCell>Ações</TableCell>
+            <TableCell><h2>Tipo de Requisição</h2></TableCell>
+            <TableCell><h2>Assunto</h2></TableCell>
+            <TableCell><h2>Descrição</h2></TableCell>
+            <TableCell><h2>Prioridade</h2></TableCell>
+            <TableCell><h2>Ações</h2></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

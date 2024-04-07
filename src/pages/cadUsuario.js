@@ -37,11 +37,12 @@ export default function CadUsuario() {
     
     const formData = new FormData(event.target);
     const login = formData.get("login");
-    const password = formData.get("password");
-  
-    // Salvar login e senha no localStorage
-    localStorage.setItem("login", login);
-    localStorage.setItem("senha", password);
+    const cpf = formData.get("cpf");
+    const email = formData.get("email");
+    const telefone = formData.get("telefone");
+
+    // Salvar login e senha no localStorage como JSON
+    localStorage.setItem("user", JSON.stringify({ login, password, cpf, email, telefone }));
   
     // Redirecionar para a página de login
     window.location.href = "/login";
@@ -88,7 +89,7 @@ export default function CadUsuario() {
           <MenuItem value=""></MenuItem>
           <MenuItem value={10}>Prefeitura-Bairro Centro/Brotas</MenuItem>
           <MenuItem value={20}>Prefeitura-Bairro Subúrbio/Ilhas</MenuItem>
-          <MenuItem value={30}>Prefeitura-Bairro Cajazeiras</MenuItem>v
+          <MenuItem value={30}>Prefeitura-Bairro Cajazeiras</MenuItem>
           <MenuItem value={40}>Prefeitura-Bairro Itapuã</MenuItem>
           <MenuItem value={50}>Prefeitura-Bairro Cidade Baixa</MenuItem>
           <MenuItem value={60}>Prefeitura-Bairro Barra/Pituba</MenuItem>
@@ -140,7 +141,7 @@ export default function CadUsuario() {
           Anexar Arquivo
           <VisuallyHiddenInput type="file" />
         </Button>
-        <Button href="/login" type="submit" variant="contained" color="primary">
+        <Button type="submit" variant="contained" color="primary">
           Cadastrar
         </Button>
       </Box>

@@ -33,16 +33,21 @@ export default function Login() {
   const handleLogin = (event) => {
     event.preventDefault();
     const formData = new FormData(event.target);
-    const login = formData.get("login");
-    const password = formData.get("password");
+    const login = (formData.get("login") || "").trim();
+    const password = (formData.get("password") || "").trim();
 
-    // Obter login e senha do localStorage
-    const storedLogin = localStorage.getItem("login");
-    console.log(storedLogin)
-    const storedSenha = localStorage.getItem("senha");
-    console.log(storedSenha)
-    // Verificar se o login e a senha fornecidos correspondem aos armazenados
-    if (login === storedLogin && password === storedSenha) {
+    const userDataJSON = localStorage.getItem("user");
+    console.log("Dados do usuário do localStorage:", userDataJSON);
+    if (!userDataJSON) {
+      alert("Você ainda não está cadastrado. Por favor, cadastre-se primeiro.");
+      return;
+    }
+    
+    const userData = JSON.parse(userDataJSON);
+    console.log("Dados do usuário parseados:", userData);
+
+    console.log("Dados do formulário:", { login, password });
+    if (login === userData.login && password === userData.password) {
       router.push("/cadRequisicoes");
     } else {
       alert("Login ou senha incorretos");
@@ -66,6 +71,7 @@ export default function Login() {
             type="password"
             autoComplete="current-password"
             variant="outlined"
+            name="password"
             required
           />
 

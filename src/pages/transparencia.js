@@ -18,14 +18,14 @@ const Trasparencia = () => {
   }, []);
 
   return (
-    <TableContainer component={Paper} sx={{marginTop: "10vh"}}>
+    <TableContainer component={Paper} sx={{ padding: "10vh", height: "80vh"}}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Tipo de Requisição</TableCell>
-            <TableCell>Assunto</TableCell>
-            <TableCell>Descrição</TableCell>
-            <TableCell>Prioridade</TableCell>
+            <TableCell><h2>Tipo de Requisição</h2></TableCell>
+            <TableCell><h2>Assunto</h2></TableCell>
+            <TableCell><h2>Descrição</h2></TableCell>
+            <TableCell><h2>Prioridade</h2></TableCell>
           </TableRow>
         </TableHead>
         <TableBody>

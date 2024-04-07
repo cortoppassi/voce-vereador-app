@@ -49,9 +49,9 @@ export default function DrawerAppBar() {
           <Link href="/" passHref>
             <Button variant="text" color="inherit" sx={{ color: 'white' }}> Prefeitura</Button>
           </Link>
-          <Link href="/cadRequisicoes" passHref>
+          {/* <Link href="/cadRequisicoes" passHref>
             <Button color="inherit" sx={{ color: 'white' }}> Serviços</Button>
-          </Link>
+          </Link> */}
           <Link href="/transparencia" passHref>
             <Button color="inherit" sx={{ color: 'white' }}> Transparência</Button>
           </Link>

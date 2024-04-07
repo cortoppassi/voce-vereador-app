@@ -81,8 +81,8 @@ export default function CadRequisicoes() {
   };
 
   return (
-    <Grid container spacing={3}>
-      <Grid item xs={6}>
+    <Grid container spacing={3} style={{ justifyContent: "space-evenly",  marginTop: "10vh",}}>
+      <Grid item xs={6} style={{textAlign: "center"}}>
         <Box
           component="form"
           onSubmit={handleSubmit}
@@ -94,8 +94,8 @@ export default function CadRequisicoes() {
             border: "1px solid black",
             borderRadius: "8px",
             padding: "20px",
-            marginTop: "10vh",
             justifyContent: "space-around",
+            margin: "10px",
           }}
           noValidate
           autoComplete="off"
@@ -186,13 +186,10 @@ export default function CadRequisicoes() {
           </Button>
         </Box>
       </Grid>
-      <Grid item xs={6}>
+      <Grid item xs={6} style={{textAlign: "center"}}>
         <Box
           sx={{
-            // border: "1px solid black",
-            borderRadius: "8px",
-            padding: "20px",
-            marginTop: "10vh",
+            padding: "20px"
           }}
         >
           <Typography variant="h5">Requisições Cadastradas</Typography>

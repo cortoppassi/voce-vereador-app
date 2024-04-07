@@ -71,7 +71,7 @@ export default function CadUsuario() {
         autoComplete="off"
       >
         <Typography variant="h5">Cadastro de Usuário</Typography>
-        <TextField name="login" label="Login" variant="standard" required />
+        <TextField name="Nome" label="Nome" variant="standard" required />
         <TextField name="cpf" label="CPF" variant="standard" required />
         <TextField name="email" label="E-mail" variant="standard" required />
 

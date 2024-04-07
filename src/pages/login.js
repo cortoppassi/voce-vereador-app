@@ -50,7 +50,7 @@ export default function Login() {
     if (login === userData.login && password === userData.password) {
       router.push("/cadRequisicoes");
     } else {
-      alert("Login ou senha incorretos");
+      alert("E-maill ou senha incorretos");
     }
   };
 
@@ -60,9 +60,9 @@ export default function Login() {
         <StyledForm onSubmit={handleLogin}>
           <TextField
             id="outlined-basic"
-            label="Login"
+            label="E-mail"
             variant="outlined"
-            name="login"
+            name="E-mail"
             required
           />
           <TextField

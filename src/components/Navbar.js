@@ -55,7 +55,7 @@ export default function DrawerAppBar() {
           <Link href="/transparencia" passHref>
             <Button color="inherit" sx={{ color: 'white' }}> Transparência</Button>
           </Link>
-          <Link href="/login" passHref>
+          <Link href="/login/login" passHref>
             <Button color="inherit" sx={{ color: 'white' }}> Login</Button>
           </Link>
         </Toolbar>

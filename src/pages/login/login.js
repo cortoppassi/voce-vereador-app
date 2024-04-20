@@ -80,7 +80,7 @@ export default function Login() {
           </StyledButton>
           <Typography variant="subtitle1" align="center" component="p">
             Ainda não é cadastrado?{" "}
-            <Link href="/cadUsuario" color="primary" underline="always">
+            <Link href="/userRegistration/cadUsuario" color="primary" underline="always">
               Clique aqui
             </Link>
           </Typography>

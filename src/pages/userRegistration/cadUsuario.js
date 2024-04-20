@@ -77,7 +77,7 @@ export default function CadUsuario() {
 
         <FormControl sx={{ m: 1, minWidth: 80 }}>
           <InputLabel id="demo-simple-select-standard-label"> Prefeitura-Bairro</InputLabel>
-          <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" label="Age" {...register("selecteField")} onChange={handleChange}>
+          <Select labelId="demo-simple-select-standard-label" id="demo-simple-select-standard" label="Age" {...register("selecteField", {required: true})} onChange={handleChange}>
             <MenuItem value=""></MenuItem>
             <MenuItem value={10}>Prefeitura-Bairro Centro/Brotas</MenuItem>
             <MenuItem value={20}>Prefeitura-Bairro Subúrbio/Ilhas</MenuItem>
@@ -92,7 +92,7 @@ export default function CadUsuario() {
             <MenuItem value={110}>Prefeitura-Bairro Distrito Cultural Centro Histórico</MenuItem>  
           </Select>
         </FormControl>
-
+        {errors?.selectField && <span className="error-message">Prefeitura-Bairro obrigatório*</span>}
         <TextField
           label="Telefone"
           variant="standard"

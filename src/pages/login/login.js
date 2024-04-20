@@ -29,7 +29,7 @@ const StyledButton = styled(Button)({
 });
 
 export default function Login() {
-  const { register, handleSubmit, setValue, formState: {errors} } = useForm();
+  const { register, handleSubmit, formState: {errors} } = useForm();
   const router = useRouter();
 
   const onSubmit = (data) => {

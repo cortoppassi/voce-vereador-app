@@ -16,6 +16,7 @@ import InputLabel from "@mui/material/InputLabel";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
+import { useForm } from "react-hook-form";
 
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",
@@ -30,12 +31,26 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function CadRequisicoes() {
+  const { register, handleSubmit, watch, formState: {errors} } = useForm();
+  const checkedValues = watch(["Baixa", "Média", "Alta"]);
+
   const [requisicoes, setRequisicoes] = useState([]);
-  const [tipoRequisicao, setTipoRequisicao] = useState("");
   const [age, setAge] = React.useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [selectedOption, setSelectedOption] = useState("");
+
+  const handleChage = (event) => {
+    setAge("selectField", event.target.value);
+  };
+
+  const getPrioridade = (requisicao) => {
+    if (requisicao.Alta) {
+        return "Alta";
+    } else if (requisicao.Média) {
+        return "Média";
+    } else if (requisicao.Baixa) {
+        return "Baixa";
+    }
+    return "N/A";
+};
 
   useEffect(() => {
     const storedRequisicoes = localStorage.getItem("requisicoes");
@@ -48,30 +63,13 @@ export default function CadRequisicoes() {
     localStorage.setItem("requisicoes", JSON.stringify(requisicoes));
   }, [requisicoes]);
 
-  const handleCheckboxChange = (value) => {
-    setSelectedOption(value);
-  };
-
-  const handleChange = (event) => {
-    setAge(event.target.value);
-  };
-
+ 
   const handleChangeTipoRequisicao = (event) => {
     setTipoRequisicao(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (password !== confirmPassword) {
-      alert("As senhas não coincidem!");
-      return;
-    }
-    const formData = new FormData(event.target);
-    const formDataObj = Object.fromEntries(formData.entries());
-    formDataObj.tipoRequisicao = tipoRequisicao;
-    formDataObj.Prioridade = selectedOption;
-    setRequisicoes([...requisicoes, formDataObj]);
-    event.target.reset();
+  const onSubmit = (data) => {
+    setRequisicoes([...requisicoes, data]);
   };
 
   const handleDelete = (index) => {
@@ -85,7 +83,6 @@ export default function CadRequisicoes() {
       <Grid item xs={6} style={{textAlign: "center"}}>
         <Box
           component="form"
-          onSubmit={handleSubmit}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -109,32 +106,32 @@ export default function CadRequisicoes() {
             <Select
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
-              value={tipoRequisicao}
-              onChange={handleChangeTipoRequisicao}
               label="Tipo de Requisição"
+              {...register("tipoRequisicao", {required: true})} onChange={handleChage}
             >
-              <MenuItem value="Reclamações">Reclamações</MenuItem>
-              <MenuItem value="Notificação">Notificação</MenuItem>
-              <MenuItem value="Solicitações">Solicitações</MenuItem>
-              <MenuItem value="Denúncias">Denúncias</MenuItem>
+              <MenuItem value={"Reclamações"}>Reclamações</MenuItem>
+              <MenuItem value={"Notificação"}>Notificação</MenuItem>
+              <MenuItem value={"Solicitações"}>Solicitações</MenuItem>
+              <MenuItem value={"Denúncias"}>Denúncias</MenuItem>
             </Select>
           </FormControl>
-
+          {errors?.tipoRequisicao && <span className="error-message">Tipo de Requisição obrigatório*</span>}
           <TextField
             name="Assunto"
             label="Título da Requisição"
             variant="standard"
-            required
+            {...register("Assunto", {required: true})}
           />
+          {errors?.Assunto && <span className="error-message">Assunto obrigatório*</span>}
           <TextField
             id="outlined-multiline-static"
             name="Descricao"
             label="Descreva Detalhadamente"
             multiline
             rows={4}
-            defaultValue=""
-            required
+            {...register("Descricao", {required: true})}
           />
+          {errors?.Descricao && <span className="error-message">Descrição obrigatória*</span>}
 
           <InputLabel id="demo-simple-select-standard-label">
             Prioridade da Requisição
@@ -146,8 +143,8 @@ export default function CadRequisicoes() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={selectedOption === "Baixa"}
-                  onChange={() => handleCheckboxChange("Baixa")}
+                  {...register("Baixa")}
+                  checked={checkedValues[0]}
                 />
               }
               label="Baixa"
@@ -155,8 +152,8 @@ export default function CadRequisicoes() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={selectedOption === "Média"}
-                  onChange={() => handleCheckboxChange("Média")}
+                  {...register("Média")}
+                  checked={checkedValues[1]}
                 />
               }
               label="Média"
@@ -164,8 +161,8 @@ export default function CadRequisicoes() {
             <FormControlLabel
               control={
                 <Checkbox
-                  checked={selectedOption === "Alta"}
-                  onChange={() => handleCheckboxChange("Alta")}
+                  {...register("Alta")}
+                  checked={checkedValues[2]}
                 />
               }
               label="Alta"
@@ -181,7 +178,7 @@ export default function CadRequisicoes() {
             Anexar Arquivo
             <VisuallyHiddenInput type="file" />
           </Button>
-          <Button type="submit" variant="contained" color="primary">
+          <Button onClick={() => handleSubmit(onSubmit)()} variant="contained" color="primary">
             Cadastrar
           </Button>
         </Box>
@@ -211,7 +208,7 @@ export default function CadRequisicoes() {
               <TableCell>{requisicao.tipoRequisicao}</TableCell>
               <TableCell>{requisicao.Assunto}</TableCell>
               <TableCell>{requisicao.Descricao}</TableCell>
-              <TableCell>{requisicao.Prioridade}</TableCell>
+              <TableCell>{getPrioridade(requisicao)}</TableCell>
               <TableCell>
                 <IconButton onClick={() => handleDelete(index)}>
                   <DeleteIcon />

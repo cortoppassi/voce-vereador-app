@@ -52,6 +52,17 @@ export default function CadRequisicoes() {
     return "N/A";
 };
 
+
+
+ 
+  const handleChangeTipoRequisicao = (event) => {
+    setTipoRequisicao(event.target.value);
+  };
+
+  const onSubmit = (data) => {
+    setRequisicoes([...requisicoes, data]);
+  };
+
   useEffect(() => {
     const storedRequisicoes = localStorage.getItem("requisicoes");
     if (storedRequisicoes) {
@@ -62,15 +73,6 @@ export default function CadRequisicoes() {
   useEffect(() => {
     localStorage.setItem("requisicoes", JSON.stringify(requisicoes));
   }, [requisicoes]);
-
- 
-  const handleChangeTipoRequisicao = (event) => {
-    setTipoRequisicao(event.target.value);
-  };
-
-  const onSubmit = (data) => {
-    setRequisicoes([...requisicoes, data]);
-  };
 
   const handleDelete = (index) => {
     const updatedRequisicoes = [...requisicoes];

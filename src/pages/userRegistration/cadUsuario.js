@@ -28,9 +28,8 @@ export default function CadUsuario() {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
-    
-    // window.location.href = "/login/login";
+    localStorage.setItem("user", JSON.stringify(data));
+    window.location.href = "/login/login";
   };
 
   return (

@@ -46,23 +46,31 @@ const Trasparencia = () => {
   return (
     <TableContainer component={Paper} sx={{ padding: "10vh", height: "80vh" }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
+      {requisicoes && requisicoes.length != 0 ? (
         <TableHead>
-          <TableRow>
-            <TableCell>
-              <h2>Tipo de Requisição</h2>
-            </TableCell>
-            <TableCell>
-              <h2>Assunto</h2>
-            </TableCell>
-            <TableCell>
-              <h2>Descrição</h2>
-            </TableCell>
-            <TableCell>
-              <h2>Prioridade</h2>
-            </TableCell>
-            <TableCell></TableCell>
-          </TableRow>
-        </TableHead>
+          {console.log(requisicoes)}
+        <TableRow>
+          <TableCell>
+            <h2>Tipo de Requisição</h2>
+          </TableCell>
+          <TableCell>
+            <h2>Assunto</h2>
+          </TableCell>
+          <TableCell>
+            <h2>Descrição</h2>
+          </TableCell>
+          <TableCell>
+            <h2>Prioridade</h2>
+          </TableCell>
+          <TableCell></TableCell>
+        </TableRow>
+      </TableHead>
+      ) : (
+        <>
+          <h1>Não a requisições cadastradas</h1>
+        </>
+      )}
+        
         <TableBody>
           {requisicoes.map((requisicao, index) => (
             <TableRow key={index}>

@@ -1,3 +1,4 @@
+'use client'
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
@@ -8,21 +9,23 @@ import Button from '@mui/material/Button';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Image from 'next/image';
-
 import Link from 'next/link';
-
-
-const drawerWidth = 240;
+import { useEffect, useState } from 'react';
 
 
 export default function DrawerAppBar() {
-  // const { window } = props;
-  const [mobileOpen, setMobileOpen] = React.useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const [login, setLogin] = useState(true)
 
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
-
+  
+  useEffect(() => {
+    const isLogin = localStorage.getItem("login")
+    console.log(isLogin)
+    if (isLogin) setLogin(true)
+  }, [])
 
   return (
     <Box sx={{ display: 'flex', color: '#fff'}}>
@@ -49,15 +52,18 @@ export default function DrawerAppBar() {
           <Link href="/" passHref>
             <Button variant="text" color="inherit" sx={{ color: 'white' }}> Prefeitura</Button>
           </Link>
-          {/* <Link href="/cadRequisicoes" passHref>
-            <Button color="inherit" sx={{ color: 'white' }}> Serviços</Button>
-          </Link> */}
+          {login && (
+            <Link href="/registrationRequests/cadRequisicoes" passHref>
+              <Button color="inherit" sx={{ color: 'white' }}> Serviços</Button>
+            </Link>
+          )}
           <Link href="/transparencia" passHref>
             <Button color="inherit" sx={{ color: 'white' }}> Transparência</Button>
           </Link>
           <Link href="/login/login" passHref>
             <Button color="inherit" sx={{ color: 'white' }}> Login</Button>
           </Link>
+          
         </Toolbar>
       </AppBar>
      

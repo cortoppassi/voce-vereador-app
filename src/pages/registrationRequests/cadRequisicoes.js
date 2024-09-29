@@ -8,7 +8,16 @@ import {
   Checkbox,
   Grid,
 } from "@mui/material";
-import { TableContainer, Paper, Table, TableHead, TableRow, TableCell, TableBody, IconButton } from "@mui/material";
+import {
+  TableContainer,
+  Paper,
+  Table,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableBody,
+  IconButton,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/system";
@@ -31,7 +40,12 @@ const VisuallyHiddenInput = styled("input")({
 });
 
 export default function CadRequisicoes() {
-  const { register, handleSubmit, watch, formState: {errors} } = useForm();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
   const checkedValues = watch(["Baixa", "Média", "Alta"]);
 
   const [requisicoes, setRequisicoes] = useState([]);
@@ -43,23 +57,21 @@ export default function CadRequisicoes() {
 
   const getPrioridade = (requisicao) => {
     if (requisicao.Alta) {
-        return "Alta";
+      return "Alta";
     } else if (requisicao.Média) {
-        return "Média";
+      return "Média";
     } else if (requisicao.Baixa) {
-        return "Baixa";
+      return "Baixa";
     }
     return "N/A";
-};
+  };
 
-
-
- 
   const handleChangeTipoRequisicao = (event) => {
     setTipoRequisicao(event.target.value);
   };
 
   const onSubmit = (data) => {
+    console.log(data)
     setRequisicoes([...requisicoes, data]);
   };
 
@@ -81,8 +93,12 @@ export default function CadRequisicoes() {
   };
 
   return (
-    <Grid container spacing={3} style={{ justifyContent: "space-evenly",  marginTop: "10vh",}}>
-      <Grid item xs={6} style={{textAlign: "center"}}>
+    <Grid
+      container
+      spacing={3}
+      style={{ justifyContent: "space-evenly", marginTop: "10vh" }}
+    >
+      <Grid item xs={6} style={{ textAlign: "center" }}>
         <Box
           component="form"
           sx={{
@@ -109,7 +125,8 @@ export default function CadRequisicoes() {
               labelId="demo-simple-select-standard-label"
               id="demo-simple-select-standard"
               label="Tipo de Requisição"
-              {...register("tipoRequisicao", {required: true})} onChange={handleChage}
+              {...register("tipoRequisicao", { required: true })}
+              onChange={handleChage}
             >
               <MenuItem value={"Reclamações"}>Reclamações</MenuItem>
               <MenuItem value={"Notificação"}>Notificação</MenuItem>
@@ -117,23 +134,31 @@ export default function CadRequisicoes() {
               <MenuItem value={"Denúncias"}>Denúncias</MenuItem>
             </Select>
           </FormControl>
-          {errors?.tipoRequisicao && <span className="error-message">Tipo de Requisição obrigatório*</span>}
+          {errors?.tipoRequisicao && (
+            <span className="error-message">
+              Tipo de Requisição obrigatório*
+            </span>
+          )}
           <TextField
             name="Assunto"
             label="Título da Requisição"
             variant="standard"
-            {...register("Assunto", {required: true})}
+            {...register("Assunto", { required: true })}
           />
-          {errors?.Assunto && <span className="error-message">Assunto obrigatório*</span>}
+          {errors?.Assunto && (
+            <span className="error-message">Assunto obrigatório*</span>
+          )}
           <TextField
             id="outlined-multiline-static"
             name="Descricao"
             label="Descreva Detalhadamente"
             multiline
             rows={4}
-            {...register("Descricao", {required: true})}
+            {...register("Descricao", { required: true })}
           />
-          {errors?.Descricao && <span className="error-message">Descrição obrigatória*</span>}
+          {errors?.Descricao && (
+            <span className="error-message">Descrição obrigatória*</span>
+          )}
 
           <InputLabel id="demo-simple-select-standard-label">
             Prioridade da Requisição
@@ -144,28 +169,19 @@ export default function CadRequisicoes() {
           >
             <FormControlLabel
               control={
-                <Checkbox
-                  {...register("Baixa")}
-                  checked={checkedValues[0]}
-                />
+                <Checkbox {...register("Baixa")} checked={checkedValues[0]} />
               }
               label="Baixa"
             />
             <FormControlLabel
               control={
-                <Checkbox
-                  {...register("Média")}
-                  checked={checkedValues[1]}
-                />
+                <Checkbox {...register("Média")} checked={checkedValues[1]} />
               }
               label="Média"
             />
             <FormControlLabel
               control={
-                <Checkbox
-                  {...register("Alta")}
-                  checked={checkedValues[2]}
-                />
+                <Checkbox {...register("Alta")} checked={checkedValues[2]} />
               }
               label="Alta"
             />
@@ -180,77 +196,62 @@ export default function CadRequisicoes() {
             Anexar Arquivo
             <VisuallyHiddenInput type="file" />
           </Button>
-          <Button onClick={() => handleSubmit(onSubmit)()} variant="contained" color="primary">
+          <Button
+            onClick={() => handleSubmit(onSubmit)()}
+            variant="contained"
+            color="primary"
+          >
             Cadastrar
           </Button>
         </Box>
       </Grid>
-      <Grid item xs={6} style={{textAlign: "center"}}>
-        <Box
-          sx={{
-            padding: "20px"
-          }}
-        >
-          <Typography variant="h4">Requisições Cadastradas</Typography>
-          
-          <TableContainer component={Paper} sx={{  }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-        <TableHead>
-          <TableRow>
-            <TableCell><h2>Tipo de Requisição</h2></TableCell>
-            <TableCell><h2>Assunto</h2></TableCell>
-            <TableCell><h2>Descrição</h2></TableCell>
-            <TableCell><h2>Prioridade</h2></TableCell>
-            <TableCell><h2>Ações</h2></TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {requisicoes.map((requisicao, index) => (
-            <TableRow key={index}>
-              <TableCell>{requisicao.tipoRequisicao}</TableCell>
-              <TableCell>{requisicao.Assunto}</TableCell>
-              <TableCell>{requisicao.Descricao}</TableCell>
-              <TableCell>{getPrioridade(requisicao)}</TableCell>
-              <TableCell>
-                <IconButton onClick={() => handleDelete(index)}>
-                  <DeleteIcon />
-                </IconButton>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
-          
-            {/* {requisicoes.map((requisicao, index) => (
-              <Box
-              sx={{
-                border: "1px solid black",
-                borderRadius: "8px",
-                padding: "20px",
-                marginTop: "10vh",
-              }}
-            >
-              <div key={index}>
-                <Typography variant="subtitle1">
-                  Tipo: {requisicao.tipoRequisicao}
-                </Typography>
-                <Typography variant="subtitle1">
-                  Assunto: {requisicao.Assunto}
-                </Typography>
-                <Typography variant="body1">
-                  Descrição: {requisicao.Descricao}
-                </Typography>
-                <Typography variant="body2">
-                  Prioridade: {requisicao.Prioridade}
-                </Typography>
-                <Button onClick={() => handleDelete(index)}>Excluir</Button>
-              </div>
-              </Box>
-            ))} */}
-         
-        </Box>
-      </Grid>
+
+      {requisicoes && requisicoes.length != 0 && (
+        <Grid item xs={6} style={{ textAlign: "center" }}>
+          <Box sx={{ padding: "20px" }}>
+            <Typography variant="h4">Requisições Cadastradas</Typography>
+
+            <TableContainer component={Paper} sx={{}}>
+              <Table sx={{ minWidth: 650 }} aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>
+                      <h2>Tipo de Requisição</h2>
+                    </TableCell>
+                    <TableCell>
+                      <h2>Assunto</h2>
+                    </TableCell>
+                    <TableCell>
+                      <h2>Descrição</h2>
+                    </TableCell>
+                    <TableCell>
+                      <h2>Prioridade</h2>
+                    </TableCell>
+                    <TableCell>
+                      <h2>Ações</h2>
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {requisicoes.map((requisicao, index) => (
+                    <TableRow key={index}>
+                      <TableCell>{requisicao.tipoRequisicao}</TableCell>
+                      <TableCell>{requisicao.Assunto}</TableCell>
+                      <TableCell>{requisicao.Descricao}</TableCell>
+                      <TableCell>{getPrioridade(requisicao)}</TableCell>
+                      <TableCell>
+                        <IconButton onClick={() => handleDelete(index)}>
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Box>
+        </Grid>
+      )}
     </Grid>
   );
 }

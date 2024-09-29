@@ -34,7 +34,8 @@ export default function Login() {
 
   const onSubmit = (data) => {
     const user = JSON.parse(localStorage.getItem("user"));
-    if (data.email === user.email && data.password === user.password) {
+    if (data?.email === user?.email && data?.password === user?.password) {
+      localStorage.setItem("login", true)
       router.push("/registrationRequests/cadRequisicoes");
     } else {
       alert("E-mail ou senha incorretos");

@@ -29,26 +29,93 @@ const style = {
 const Trasparencia = () => {
   const [requisicoes, setRequisicoes] = useState([]);
   const [open, setOpen] = React.useState(false);
-  const handleOpen = () => {
-    setOpen(true);
-  };
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const [isClient, setIsClient] = useState(false);
 
+  const handleOpen = () => {setOpen(true)};
+  const handleClose = () => {setOpen(false)};
+
+  const predefinidas = [
+    {
+      tipoRequisicao: "Reclamação",
+      Assunto: "Buraco na Rua",
+      Descricao: "Há um buraco na rua que está causando acidentes.",
+      Prioridade: "Alta",
+    },
+    {
+      tipoRequisicao: "Denúncia",
+      Assunto: "Lixo na praça",
+      Descricao: "Estão jogando lixo na praça central.",
+      Prioridade: "Média",
+    },
+    {
+      tipoRequisicao: "Solicitação",
+      Assunto: "Poda de árvores",
+      Descricao: "Solicitação de poda de árvores na rua principal.",
+      Prioridade: "Baixa",
+    },
+    // Adicione outras 7 requisições aqui
+    {
+      tipoRequisicao: "Reclamação",
+      Assunto: "Falta de iluminação",
+      Descricao: "A rua está sem iluminação pública.",
+      Prioridade: "Alta",
+    },
+    {
+      tipoRequisicao: "Notificação",
+      Assunto: "Infiltração em escola",
+      Descricao: "Relato de infiltração no teto da escola.",
+      Prioridade: "Alta",
+    },
+    {
+      tipoRequisicao: "Solicitação",
+      Assunto: "Mais ônibus",
+      Descricao: "Solicitação para aumentar o número de ônibus na rota.",
+      Prioridade: "Média",
+    },
+    {
+      tipoRequisicao: "Denúncia",
+      Assunto: "Som alto",
+      Descricao: "Relato de som alto após o horário permitido.",
+      Prioridade: "Baixa",
+    },
+    {
+      tipoRequisicao: "Solicitação",
+      Assunto: "Sinalização de trânsito",
+      Descricao: "Solicitação de placas de sinalização no bairro.",
+      Prioridade: "Média",
+    },
+    {
+      tipoRequisicao: "Reclamação",
+      Assunto: "Água suja",
+      Descricao: "Reclamação de água com aparência turva nas torneiras.",
+      Prioridade: "Alta",
+    },
+    {
+      tipoRequisicao: "Notificação",
+      Assunto: "Calçada quebrada",
+      Descricao: "Notificação de calçada quebrada em frente à padaria.",
+      Prioridade: "Baixa",
+    },
+  ];
   useEffect(() => {
-    const storedRequisicoes = localStorage.getItem("requisicoes");
-    if (storedRequisicoes) {
-      setRequisicoes(JSON.parse(storedRequisicoes));
-    }
+    setIsClient(true);
+    const storedRequisicoes = JSON.parse(localStorage.getItem("requisicoes")) || [];
+    const allRequisicoes = [...predefinidas, ...storedRequisicoes];
+    const uniqueRequisicoes = Array.from(new Set(allRequisicoes.map(a => JSON.stringify(a)))).map(a => JSON.parse(a));
+
+    localStorage.setItem("requisicoes", JSON.stringify(uniqueRequisicoes));
+    setRequisicoes(uniqueRequisicoes);
   }, []);
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <TableContainer component={Paper} sx={{ padding: "10vh", height: "80vh" }}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
       {requisicoes && requisicoes.length != 0 ? (
         <TableHead>
-          {console.log(requisicoes)}
         <TableRow>
           <TableCell>
             <h2>Tipo de Requisição</h2>

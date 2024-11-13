@@ -46,7 +46,7 @@ export default function DrawerAppBar() {
             component="div"
             sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
           >
-            <img src="https://colaboracao.salvador.ba.gov.br/assets/images/logo.png" alt="mui logo" style={{ width: '50px' }} />   
+            <Image src="https://colaboracao.salvador.ba.gov.br/assets/images/logo.png" alt="mui logo" style={{ width: '50px' }} />   
           </Typography>
           
           <Link href="/" passHref>

@@ -6,33 +6,32 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
-import { Button } from "@mui/material";
-import Modal from "@mui/material/Modal";
-import Box from "@mui/material/Box";
+import { Button, Modal, Box, Typography } from "@mui/material";
 
-const style = {
+// Estilos para o modal
+const modalStyle = {
   position: "absolute",
-  overflow: "auto",
-  height: "webkit-fill-available",
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 400,
   bgcolor: "background.paper",
   border: "2px solid #000",
   boxShadow: 24,
   pt: 2,
   px: 4,
   pb: 3,
+  width: '80%', // Responsividade
+  maxWidth: 700, // Tamanho máximo do modal
 };
 
+// Componente principal
 const Trasparencia = () => {
   const [requisicoes, setRequisicoes] = useState([]);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
 
-  const handleOpen = () => {setOpen(true)};
-  const handleClose = () => {setOpen(false)};
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
 
   const predefinidas = [
     {
@@ -53,7 +52,6 @@ const Trasparencia = () => {
       Descricao: "Solicitação de poda de árvores na rua principal.",
       Prioridade: "Baixa",
     },
-    // Adicione outras 7 requisições aqui
     {
       tipoRequisicao: "Reclamação",
       Assunto: "Falta de iluminação",
@@ -97,6 +95,7 @@ const Trasparencia = () => {
       Prioridade: "Baixa",
     },
   ];
+
   useEffect(() => {
     setIsClient(true);
     const storedRequisicoes = JSON.parse(localStorage.getItem("requisicoes")) || [];
@@ -112,83 +111,76 @@ const Trasparencia = () => {
   }
 
   return (
-    <TableContainer component={Paper} sx={{ padding: "10vh", height: "80vh" }}>
-      <Table sx={{ minWidth: 650 }} aria-label="simple table">
-      {requisicoes && requisicoes.length != 0 ? (
-        <TableHead>
-        <TableRow>
-          <TableCell>
-            <h2>Tipo de Requisição</h2>
-          </TableCell>
-          <TableCell>
-            <h2>Assunto</h2>
-          </TableCell>
-          <TableCell>
-            <h2>Descrição</h2>
-          </TableCell>
-          <TableCell>
-            <h2>Prioridade</h2>
-          </TableCell>
-          <TableCell></TableCell>
-        </TableRow>
-      </TableHead>
-      ) : (
-        <>
-          <h1>Não a requisições cadastradas</h1>
-        </>
-      )}
-        
-        <TableBody>
-          {requisicoes.map((requisicao, index) => (
-            <TableRow key={index}>
-              <TableCell>{requisicao.tipoRequisicao}</TableCell>
-              <TableCell>{requisicao.Assunto}</TableCell>
-              <TableCell>{requisicao.Descricao}</TableCell>
-              <TableCell>{requisicao.Prioridade}</TableCell>
-              <TableCell>
-                <Button
-                  variant="contained"
-                  color="success"
-                  onClick={handleOpen}
-                >
-                  Mais informações
-                </Button>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+    <Box sx={{ width: "100%", padding: "2rem", backgroundColor: "#f9f9f9", marginTop: "64px"}}>
+      <TableContainer component={Paper} sx={{ boxShadow: 3, borderRadius: 2 }}>
+        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+          {requisicoes.length !== 0 ? (
+            <TableHead>
+              <TableRow>
+                <TableCell><strong>Tipo de Requisição</strong></TableCell>
+                <TableCell><strong>Assunto</strong></TableCell>
+                <TableCell><strong>Descrição</strong></TableCell>
+                <TableCell><strong>Prioridade</strong></TableCell>
+                <TableCell></TableCell>
+              </TableRow>
+            </TableHead>
+          ) : (
+            <Typography variant="h6" align="center" sx={{ margin: "20px 0" }}>
+              Não há requisições cadastradas
+            </Typography>
+          )}
+
+          <TableBody>
+            {requisicoes.map((requisicao, index) => (
+              <TableRow key={index}>
+                <TableCell>{requisicao.tipoRequisicao}</TableCell>
+                <TableCell>{requisicao.Assunto}</TableCell>
+                <TableCell>{requisicao.Descricao}</TableCell>
+                <TableCell>{requisicao.Prioridade}</TableCell>
+                <TableCell>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleOpen}
+                  >
+                    Mais informações
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+
       <Modal
         open={open}
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
       >
-        <Box sx={{ ...style, width: 700}}>
-          <div>
-          {requisicoes.map((requisicao, index) => {
-            return (
-              <div key={index}>
-                <h2 id="child-modal-title">Dados da requisição </h2>
-                <p id="child-modal-description">
-                  Tipo de Requisição: {requisicao.tipoRequisicao}{" "}
-                </p>
-                <p id="child-modal-description">
-                  Assunto: {requisicao.Assunto}{" "}
-                </p>
-                <p id="child-modal-description">
-                  Descrição: {requisicao.Descricao}{" "}
-                </p>
-              </div>
-            );
-          })}
-          </div>
+        <Box sx={modalStyle}>
+          <Typography variant="h6" id="child-modal-title" sx={{ fontWeight: 'bold' }}>
+            Dados da Requisição
+          </Typography>
+          {requisicoes.map((requisicao, index) => (
+            <Box key={index} sx={{ marginBottom: "16px" }}>
+              <Typography variant="body1" id="child-modal-description">
+                <strong>Tipo de Requisição:</strong> {requisicao.tipoRequisicao}
+              </Typography>
+              <Typography variant="body1" id="child-modal-description">
+                <strong>Assunto:</strong> {requisicao.Assunto}
+              </Typography>
+              <Typography variant="body1" id="child-modal-description">
+                <strong>Descrição:</strong> {requisicao.Descricao}
+              </Typography>
+            </Box>
+          ))}
           <Button variant="contained" color="error" onClick={handleClose}>
-            Sair
+            Fechar
           </Button>
         </Box>
       </Modal>
-    </TableContainer>
+    </Box>
   );
 };
 

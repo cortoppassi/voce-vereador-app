@@ -7,8 +7,10 @@ import {
   FormControlLabel,
   Checkbox,
   Grid,
-} from "@mui/material";
-import {
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
   TableContainer,
   Paper,
   Table,
@@ -17,14 +19,11 @@ import {
   TableCell,
   TableBody,
   IconButton,
+  CircularProgress,
 } from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import { styled } from "@mui/system";
-import InputLabel from "@mui/material/InputLabel";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import MenuItem from "@mui/material/MenuItem";
 import { useForm } from "react-hook-form";
 
 const VisuallyHiddenInput = styled("input")({
@@ -47,13 +46,8 @@ export default function CadRequisicoes() {
     formState: { errors },
   } = useForm();
   const checkedValues = watch(["Baixa", "Média", "Alta"]);
-
   const [requisicoes, setRequisicoes] = useState([]);
-  const [age, setAge] = React.useState("");
-
-  const handleChage = (event) => {
-    setAge("selectField", event.target.value);
-  };
+  const [loading, setLoading] = useState(false);
 
   const getPrioridade = (requisicao) => {
     if (requisicao.Alta) {
@@ -66,38 +60,81 @@ export default function CadRequisicoes() {
     return "N/A";
   };
 
-  const handleChangeTipoRequisicao = (event) => {
-    setTipoRequisicao(event.target.value);
-  };
-
   const onSubmit = (data) => {
-    console.log(data)
-    setRequisicoes([...requisicoes, data]);
+    setLoading(true);
+    // Adiciona a nova requisição ao estado
+    setRequisicoes((prevRequisicoes) => {
+      const updatedRequisicoes = [...prevRequisicoes, data];
+      // Salva as requisições no localStorage
+      localStorage.setItem("requisicoes", JSON.stringify(updatedRequisicoes));
+      return updatedRequisicoes;
+    });
+    setLoading(false);
   };
-
-  useEffect(() => {
-    const storedRequisicoes = localStorage.getItem("requisicoes");
-    if (storedRequisicoes) {
-      setRequisicoes(JSON.parse(storedRequisicoes));
-    }
-  }, []);
-
-  useEffect(() => {
-    localStorage.setItem("requisicoes", JSON.stringify(requisicoes));
-  }, [requisicoes]);
 
   const handleDelete = (index) => {
     const updatedRequisicoes = [...requisicoes];
     updatedRequisicoes.splice(index, 1);
     setRequisicoes(updatedRequisicoes);
+    // Atualiza o localStorage após a exclusão
+    localStorage.setItem("requisicoes", JSON.stringify(updatedRequisicoes));
   };
+  
+  useEffect(() => {
+    // Carrega as requisições do localStorage se houverem
+    const storedRequisicoes = JSON.parse(localStorage.getItem("requisicoes")) || [];
+    setRequisicoes(storedRequisicoes);
+  }, []);
+
+
+  useEffect(() => {
+    const initialRequisicoes = [
+      {
+        tipoRequisicao: "Reclamações",
+        Assunto: "Ruído Excessivo",
+        Descricao: "Ruído vindo de obra próxima ao prédio.",
+        Baixa: true,
+        Média: false,
+        Alta: false,
+      },
+      {
+        tipoRequisicao: "Notificação",
+        Assunto: "Lixo acumulado",
+        Descricao: "Acúmulo de lixo nas ruas da cidade.",
+        Baixa: false,
+        Média: true,
+        Alta: false,
+      },
+      {
+        tipoRequisicao: "Solicitações",
+        Assunto: "Iluminação pública",
+        Descricao: "Troca de lâmpada queimada na rua X.",
+        Baixa: false,
+        Média: false,
+        Alta: true,
+      },
+      {
+        tipoRequisicao: "Denúncias",
+        Assunto: "Construção irregular",
+        Descricao: "Construção de prédio sem alvará na rua Y.",
+        Baixa: true,
+        Média: false,
+        Alta: false,
+      },
+      {
+        tipoRequisicao: "Reclamações",
+        Assunto: "Rua esburacada",
+        Descricao: "A rua Z tem vários buracos perigosos.",
+        Baixa: false,
+        Média: true,
+        Alta: false,
+      },
+    ];
+    setRequisicoes(initialRequisicoes);
+  }, []);
 
   return (
-    <Grid
-      container
-      spacing={3}
-      style={{ justifyContent: "space-evenly", marginTop: "10vh" }}
-    >
+    <Grid container spacing={3} style={{ justifyContent: "space-evenly", marginTop: "10vh" }}>
       <Grid item xs={6} style={{ textAlign: "center" }}>
         <Box
           component="form"
@@ -117,141 +154,91 @@ export default function CadRequisicoes() {
         >
           <Typography variant="h4">Cadastro de Requisições</Typography>
 
-          <FormControl sx={{ m: 1, minWidth: 80 }}>
-            <InputLabel id="demo-simple-select-standard-label">
-              Tipo de Requisição
-            </InputLabel>
+          <FormControl sx={{ m: 1, minWidth: 200 }}>
+            <InputLabel id="tipo-requisicao">Tipo de Requisição</InputLabel>
             <Select
-              labelId="demo-simple-select-standard-label"
-              id="demo-simple-select-standard"
+              labelId="tipo-requisicao"
               label="Tipo de Requisição"
-              {...register("tipoRequisicao", { required: true })}
-              onChange={handleChage}
+              {...register("tipoRequisicao", { required: "Tipo de requisição é obrigatório" })}
             >
-              <MenuItem value={"Reclamações"}>Reclamações</MenuItem>
-              <MenuItem value={"Notificação"}>Notificação</MenuItem>
-              <MenuItem value={"Solicitações"}>Solicitações</MenuItem>
-              <MenuItem value={"Denúncias"}>Denúncias</MenuItem>
+              <MenuItem value="Reclamações">Reclamações</MenuItem>
+              <MenuItem value="Notificação">Notificação</MenuItem>
+              <MenuItem value="Solicitações">Solicitações</MenuItem>
+              <MenuItem value="Denúncias">Denúncias</MenuItem>
             </Select>
+            {errors.tipoRequisicao && <span>{errors.tipoRequisicao.message}</span>}
           </FormControl>
-          {errors?.tipoRequisicao && (
-            <span className="error-message">
-              Tipo de Requisição obrigatório*
-            </span>
-          )}
+
           <TextField
             name="Assunto"
             label="Título da Requisição"
             variant="standard"
-            {...register("Assunto", { required: true })}
+            {...register("Assunto", { required: "Título é obrigatório" })}
           />
-          {errors?.Assunto && (
-            <span className="error-message">Assunto obrigatório*</span>
-          )}
+          {errors.Assunto && <span>{errors.Assunto.message}</span>}
+
           <TextField
-            id="outlined-multiline-static"
             name="Descricao"
             label="Descreva Detalhadamente"
+            variant="standard"
             multiline
             rows={4}
-            {...register("Descricao", { required: true })}
+            {...register("Descricao", { required: "Descrição é obrigatória" })}
           />
-          {errors?.Descricao && (
-            <span className="error-message">Descrição obrigatória*</span>
-          )}
+          {errors.Descricao && <span>{errors.Descricao.message}</span>}
 
-          <InputLabel id="demo-simple-select-standard-label">
-            Prioridade da Requisição
-          </InputLabel>
-          <div
-            style={{ display: "flex", justifyContent: "space-between" }}
-            sx={{ "& .MuiSvgIcon-root": { fontSize: 28, margin: "auto" } }}
-          >
-            <FormControlLabel
-              control={
-                <Checkbox {...register("Baixa")} checked={checkedValues[0]} />
-              }
-              label="Baixa"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox {...register("Média")} checked={checkedValues[1]} />
-              }
-              label="Média"
-            />
-            <FormControlLabel
-              control={
-                <Checkbox {...register("Alta")} checked={checkedValues[2]} />
-              }
-              label="Alta"
-            />
+          <Typography variant="subtitle1">Prioridade</Typography>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <FormControlLabel control={<Checkbox {...register("Baixa")} />} label="Baixa" />
+            <FormControlLabel control={<Checkbox {...register("Média")} />} label="Média" />
+            <FormControlLabel control={<Checkbox {...register("Alta")} />} label="Alta" />
           </div>
-          <Button
-            component="label"
-            role={undefined}
-            variant="contained"
-            tabIndex={-1}
-            startIcon={<CloudUploadIcon />}
-          >
+
+          <Button component="label" variant="contained" startIcon={<CloudUploadIcon />}>
             Anexar Arquivo
             <VisuallyHiddenInput type="file" />
           </Button>
-          <Button
-            onClick={() => handleSubmit(onSubmit)()}
-            variant="contained"
-            color="primary"
-          >
-            Cadastrar
+
+          <Button onClick={handleSubmit(onSubmit)} variant="contained" color="primary" disabled={loading}>
+            {loading ? <CircularProgress size={24} /> : "Cadastrar"}
           </Button>
         </Box>
       </Grid>
 
-      {requisicoes && requisicoes.length != 0 && (
-        <Grid item xs={6} style={{ textAlign: "center" }}>
-          <Box sx={{ padding: "20px" }}>
-            <Typography variant="h4">Requisições Cadastradas</Typography>
+      <Grid item xs={6} style={{ textAlign: "center" }}>
+        <Box sx={{ padding: "20px" }}>
+          <Typography variant="h4">Requisições Cadastradas</Typography>
 
-            <TableContainer component={Paper} sx={{}}>
-              <Table sx={{ minWidth: 650 }} aria-label="simple table">
-                <TableHead>
-                  <TableRow>
+          <TableContainer component={Paper}>
+            <Table sx={{ minWidth: 650 }} aria-label="simple table">
+              <TableHead>
+                <TableRow>
+                  <TableCell><h2>Tipo de Requisição</h2></TableCell>
+                  <TableCell><h2>Assunto</h2></TableCell>
+                  <TableCell><h2>Descrição</h2></TableCell>
+                  <TableCell><h2>Prioridade</h2></TableCell>
+                  <TableCell><h2>Ações</h2></TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {requisicoes.map((requisicao, index) => (
+                  <TableRow key={index}>
+                    <TableCell>{requisicao.tipoRequisicao}</TableCell>
+                    <TableCell>{requisicao.Assunto}</TableCell>
+                    <TableCell>{requisicao.Descricao}</TableCell>
+                    <TableCell>{getPrioridade(requisicao)}</TableCell>
                     <TableCell>
-                      <h2>Tipo de Requisição</h2>
-                    </TableCell>
-                    <TableCell>
-                      <h2>Assunto</h2>
-                    </TableCell>
-                    <TableCell>
-                      <h2>Descrição</h2>
-                    </TableCell>
-                    <TableCell>
-                      <h2>Prioridade</h2>
-                    </TableCell>
-                    <TableCell>
-                      <h2>Ações</h2>
+                      <IconButton onClick={() => handleDelete(index)}>
+                        <DeleteIcon />
+                      </IconButton>
                     </TableCell>
                   </TableRow>
-                </TableHead>
-                <TableBody>
-                  {requisicoes.map((requisicao, index) => (
-                    <TableRow key={index}>
-                      <TableCell>{requisicao.tipoRequisicao}</TableCell>
-                      <TableCell>{requisicao.Assunto}</TableCell>
-                      <TableCell>{requisicao.Descricao}</TableCell>
-                      <TableCell>{getPrioridade(requisicao)}</TableCell>
-                      <TableCell>
-                        <IconButton onClick={() => handleDelete(index)}>
-                          <DeleteIcon />
-                        </IconButton>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Box>
-        </Grid>
-      )}
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Box>
+      </Grid>
     </Grid>
   );
 }
